@@ -1,9 +1,16 @@
-import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export default function Home() {
   return (
-    <main className='flex min-h-screen flex-col items-center justify-center p-24'>
-      <Button variant='destructive'>Click me</Button>
+    <main className='flex min-h-screen items-center justify-center p-24'>
+      Click &nbsp;
+      <Link
+        href='/documents/123'
+        className='text-blue-500 underline'
+      >
+        here
+      </Link>
+      &nbsp;to go to document id
     </main>
   )
 }
