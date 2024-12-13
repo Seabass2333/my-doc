@@ -1,8 +1,21 @@
 'use client'
 
+import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/store/use-editor-store'
-import { LucideIcon, Undo2Icon } from 'lucide-react'
+import {
+  BoldIcon,
+  ItalicIcon,
+  ListTodoIcon,
+  LucideIcon,
+  MessageCircleIcon,
+  PrinterIcon,
+  Redo2Icon,
+  RemoveFormattingIcon,
+  SpellCheckIcon,
+  UnderlineIcon,
+  Undo2Icon
+} from 'lucide-react'
 
 interface ToolbarButtonProps {
   icon: LucideIcon
@@ -30,7 +43,6 @@ const ToolbarButton = ({
 
 const Toolbar = () => {
   const { editor } = useEditorStore()
-  console.log('editor', editor)
 
   const sections: {
     label: string
@@ -38,12 +50,76 @@ const Toolbar = () => {
     onClick: () => void
     isActive?: boolean
   }[][] = [
+    // Actions
     [
       {
-        label: 'Formatting',
+        label: 'Undo',
         icon: Undo2Icon,
         onClick: () => editor?.chain().focus().undo().run(),
         isActive: false
+      },
+      {
+        label: 'Redo',
+        icon: Redo2Icon,
+        onClick: () => editor?.chain().focus().redo().run(),
+        isActive: false
+      },
+      {
+        label: 'Print',
+        icon: PrinterIcon,
+        onClick: () => window.print()
+      },
+      {
+        label: 'Spell Check',
+        icon: SpellCheckIcon,
+        onClick: () => {
+          const current = editor?.view.dom.getAttribute('spellcheck')
+          editor?.view.dom.setAttribute(
+            'spellcheck',
+            current ? 'false' : 'true'
+          )
+        }
+      }
+    ],
+    // Formatting
+    [
+      {
+        label: 'Bold',
+        icon: BoldIcon,
+        onClick: () => editor?.chain().focus().toggleBold().run(),
+        isActive: editor?.isActive('bold')
+      },
+      {
+        label: 'Italic',
+        icon: ItalicIcon,
+        onClick: () => editor?.chain().focus().toggleItalic().run(),
+        isActive: editor?.isActive('italic')
+      },
+      {
+        label: 'Underline',
+        icon: UnderlineIcon,
+        onClick: () => editor?.chain().focus().toggleUnderline().run(),
+        isActive: editor?.isActive('underline')
+      }
+    ],
+    // Comments and Todo List
+    [
+      {
+        label: 'Comment',
+        icon: MessageCircleIcon,
+        onClick: () => console.log('comment'),
+        isActive: false
+      },
+      {
+        label: 'List Todo',
+        icon: ListTodoIcon,
+        onClick: () => editor?.chain().focus().toggleTaskList().run(),
+        isActive: editor?.isActive('taskList')
+      },
+      {
+        label: 'Remove Formatting',
+        icon: RemoveFormattingIcon,
+        onClick: () => editor?.chain().focus().unsetAllMarks().run()
       }
     ]
   ]
@@ -55,6 +131,12 @@ const Toolbar = () => {
           key={index}
           className='flex items-center gap-x-0.5'
         >
+          {index !== 0 && (
+            <Separator
+              orientation='vertical'
+              className='h-6 bg-neutral-200'
+            />
+          )}
           {section.map((button, index) => (
             <ToolbarButton
               key={index}
