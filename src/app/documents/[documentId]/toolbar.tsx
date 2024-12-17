@@ -19,6 +19,8 @@ import {
   Undo2Icon
 } from 'lucide-react'
 
+import { type Level } from '@tiptap/extension-heading'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,13 +32,11 @@ import {
 const HeadingLevelButton = () => {
   const { editor } = useEditorStore()
   const headingLevels = [
-    { label: 'Normal Text', value: '0', fontSize: '16px' },
-    { label: 'Heading 1', value: '1', fontSize: '32px' },
-    { label: 'Heading 2', value: '2', fontSize: '24px' },
-    { label: 'Heading 3', value: '3', fontSize: '18px' },
-    { label: 'Heading 4', value: '4', fontSize: '16px' },
-    { label: 'Heading 5', value: '5', fontSize: '14px' },
-    { label: 'Heading 6', value: '6', fontSize: '12px' }
+    { label: 'Normal Text', value: 0, fontSize: '16px' },
+    { label: 'Heading 1', value: 1, fontSize: '32px' },
+    { label: 'Heading 2', value: 2, fontSize: '24px' },
+    { label: 'Heading 3', value: 3, fontSize: '18px' },
+    { label: 'Heading 4', value: 4, fontSize: '16px' }
   ]
 
   const getCurrentHeadingLevel = () => {
@@ -62,12 +62,16 @@ const HeadingLevelButton = () => {
             <button
               key={value}
               onClick={() =>
-                editor?.chain().focus().setHeading({ level: value }).run()
+                editor
+                  ?.chain()
+                  .focus()
+                  .setHeading({ level: value as Level })
+                  .run()
               }
               style={{ fontSize }}
               className={cn(
                 'flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80',
-                (value === '0' && !editor?.isActive('heading')) ||
+                (value === 0 && !editor?.isActive('heading')) ||
                   (editor?.isActive('heading', { level: value }) &&
                     'bg-neutral-200/80')
               )}
@@ -157,7 +161,7 @@ const Toolbar = () => {
     label: string
     icon: LucideIcon
     content?: React.ReactNode
-    onClick: () => void
+    onClick?: () => void
     isActive?: boolean
   }[][] = [
     // Actions
@@ -195,8 +199,14 @@ const Toolbar = () => {
       {
         label: 'Font Family',
         icon: Undo2Icon,
-        content: <FontFamilyButton />,
-        onClick: () => console.log('font family')
+        content: <FontFamilyButton />
+      }
+    ],
+    [
+      {
+        label: 'Heading Level',
+        icon: Undo2Icon,
+        content: <HeadingLevelButton />
       }
     ],
     // Formatting
