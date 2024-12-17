@@ -1,13 +1,16 @@
 'use client'
 
+import { useState } from 'react'
+
 import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/store/use-editor-store'
 
-import { Separator } from '@/components/ui/separator'
 import {
   BoldIcon,
   ChevronDownIcon,
+  HighlighterIcon,
   ItalicIcon,
+  Link2Icon,
   ListTodoIcon,
   LucideIcon,
   MessageCircleIcon,
@@ -19,14 +22,105 @@ import {
   Undo2Icon
 } from 'lucide-react'
 
-import { type Level } from '@tiptap/extension-heading'
-
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+
+// types
+import { Level } from '@tiptap/extension-heading'
+
+// components
+import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
+
+// libraries
+import { ColorResult, CirclePicker, SketchPicker } from 'react-color'
+
+// LinkButton
+const LinkButton = () => {
+  const { editor } = useEditorStore()
+  const [value, setValue] = useState(editor?.getAttributes('link')?.href || '')
+
+  const onChange = (href: string) => {
+    editor?.chain().focus().extendMarkRange('link').setLink({ href }).run()
+    setValue(href)
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className='min-w-7 h-7 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm'>
+          <Link2Icon className='size-4' />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className='p-2.5 flex flex-col gap-y-2'>
+        <Input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+// text color
+const TextColorButton = () => {
+  const { editor } = useEditorStore()
+  const value = editor?.getAttributes('textStyle')?.color || '#000'
+
+  const onChange = (color: ColorResult) => {
+    editor?.chain().focus().setColor(color.hex).run()
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className='min-w-7 h-7 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm'>
+          <span className='text-xs'>A</span>
+          <div
+            className='h-0.5 w-full'
+            style={{ backgroundColor: value }}
+          />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className='p-2.5'>
+        <CirclePicker
+          onChange={onChange}
+          color={value}
+        />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+// highlight color
+const HighlightColorButton = () => {
+  const { editor } = useEditorStore()
+  const value = editor?.getAttributes('highlight')?.color || '#000'
+
+  const onChange = (color: ColorResult) => {
+    editor?.chain().focus().setHighlight({ color: color.hex }).run()
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className='min-w-7 h-7 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm'>
+          <HighlighterIcon className='size-4' />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className='p-2.5'>
+        <SketchPicker
+          onChange={onChange}
+          color={value}
+        />
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 
 // ad heading styles
 const HeadingLevelButton = () => {
@@ -160,8 +254,7 @@ const Toolbar = () => {
   const sections: {
     label: string
     icon: LucideIcon
-    content?: React.ReactNode
-    onClick?: () => void
+    onClick: () => void
     isActive?: boolean
   }[][] = [
     // Actions
@@ -193,20 +286,6 @@ const Toolbar = () => {
             current ? 'false' : 'true'
           )
         }
-      }
-    ],
-    [
-      {
-        label: 'Font Family',
-        icon: Undo2Icon,
-        content: <FontFamilyButton />
-      }
-    ],
-    [
-      {
-        label: 'Heading Level',
-        icon: Undo2Icon,
-        content: <HeadingLevelButton />
       }
     ],
     // Formatting
@@ -254,28 +333,57 @@ const Toolbar = () => {
 
   return (
     <div className='bg-[#f1f4f9] px-2.5 py-0.5 rounded-[24px] min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto'>
-      {sections.map((section, index) => (
-        <div
+      {sections[0].map((button, index) => (
+        <ToolbarButton
           key={index}
-          className='flex items-center gap-x-0.5'
-        >
-          {index !== 0 && (
-            <Separator
-              orientation='vertical'
-              className='h-6 bg-neutral-200'
-            />
-          )}
-          {section.map((button, index) =>
-            button.content ? (
-              button.content
-            ) : (
-              <ToolbarButton
-                key={index}
-                {...button}
-              />
-            )
-          )}
-        </div>
+          {...button}
+        />
+      ))}
+      <Separator
+        orientation='vertical'
+        className='h-6 bg-neutral-200'
+      />
+      <FontFamilyButton />
+      <Separator
+        orientation='vertical'
+        className='h-6 bg-neutral-200'
+      />
+      <HeadingLevelButton />
+      <Separator
+        orientation='vertical'
+        className='h-6 bg-neutral-200'
+      />
+      {/* TODO: Font size */}
+      <Separator
+        orientation='vertical'
+        className='h-6 bg-neutral-200'
+      />
+      {sections[1].map((button, index) => (
+        <ToolbarButton
+          key={index}
+          {...button}
+        />
+      ))}
+      {/* Text color */}
+      <TextColorButton />
+      {/* Highligh color */}
+      <HighlightColorButton />
+      <Separator
+        orientation='vertical'
+        className='h-6 bg-neutral-200'
+      />
+      {/* link */}
+      <LinkButton />
+      {/* image */}
+      <Separator
+        orientation='vertical'
+        className='h-6 bg-neutral-200'
+      />
+      {sections[2].map((button, index) => (
+        <ToolbarButton
+          key={index}
+          {...button}
+        />
       ))}
     </div>
   )
