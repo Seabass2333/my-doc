@@ -38,6 +38,7 @@ import { Separator } from '@/components/ui/separator'
 
 // libraries
 import { ColorResult, CirclePicker, SketchPicker } from 'react-color'
+import { Button } from '@/components/ui/button'
 
 // LinkButton
 const LinkButton = () => {
@@ -52,15 +53,20 @@ const LinkButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className='min-w-7 h-7 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm'>
+        <button
+          onClick={() => setValue(editor?.getAttributes('link').href)}
+          className='min-w-7 h-7 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm'
+        >
           <Link2Icon className='size-4' />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='p-2.5 flex flex-col gap-y-2'>
+      <DropdownMenuContent className='p-2.5 flex gap-x-2'>
         <Input
+          placeholder='https://example.com'
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => setValue(e.target.value)}
         />
+        <Button onClick={() => onChange(value)}>Add</Button>
       </DropdownMenuContent>
     </DropdownMenu>
   )

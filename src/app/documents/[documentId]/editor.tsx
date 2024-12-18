@@ -78,7 +78,7 @@ const Editor = () => {
       })
     ],
     content: `
-        <img src="https://via.placeholder.com/800x100" alt="Placeholder" />
+        <img src="https://via.placeholder.com/300x100" alt="Placeholder" />
         <table>
           <tbody>
             <tr>
@@ -93,6 +93,12 @@ const Editor = () => {
             </tr>
           </tbody>
         </table>
+        <br />
+        <p>
+          <a href="https://www.google.com">Google</a>
+        </p>
+
+        <br />
       `
   })
 
