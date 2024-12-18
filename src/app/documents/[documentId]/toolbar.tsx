@@ -6,12 +6,17 @@ import { cn } from '@/lib/utils'
 import { useEditorStore } from '@/store/use-editor-store'
 
 import {
+  AlignCenterIcon,
+  AlignJustifyIcon,
+  AlignLeftIcon,
+  AlignRightIcon,
   BoldIcon,
   ChevronDownIcon,
   HighlighterIcon,
   ImageIcon,
   ItalicIcon,
   Link2Icon,
+  ListIcon,
   ListTodoIcon,
   LucideIcon,
   MessageCircleIcon,
@@ -50,6 +55,97 @@ import { Separator } from '@/components/ui/separator'
 // libraries
 import { ColorResult, CirclePicker, SketchPicker } from 'react-color'
 import { Button } from '@/components/ui/button'
+
+// ListButton
+const ListButton = () => {
+  const { editor } = useEditorStore()
+  const alignments = [
+    {
+      label: 'Align Left',
+      value: 'left',
+      icon: AlignLeftIcon
+    },
+    {
+      label: 'Align Center',
+      value: 'center',
+      icon: AlignCenterIcon
+    },
+    {
+      label: 'Align Right',
+      value: 'right',
+      icon: AlignRightIcon
+    },
+    {
+      label: 'Align Justify',
+      value: 'justify',
+      icon: AlignJustifyIcon
+    }
+  ]
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className='min-w-7 h-7 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm'>
+          <AlignLeftIcon className='size-4' />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className='p-1 flex flex-col gap-y-1'>
+        {alignments.map(({ label, value, icon: Icon }) => (
+          <button
+            key={value}
+            onClick={() => editor?.chain().focus().setTextAlign(value).run()}
+            className={cn(
+              'flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80',
+              editor?.getAttributes('textStyle')?.textAlign === value &&
+                'bg-neutral-200/80'
+            )}
+          >
+            <Icon className='size-4' />
+            {label}
+          </button>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+// AlignButton
+const AlignButton = () => {
+  const { editor } = useEditorStore()
+  const lists = [
+    {
+      label: 'Bullet List',
+      icon: ListIcon,
+      isActive: () => editor?.isActive('bulletList'),
+      onClick: () => editor?.chain().focus().toggleBulletList().run()
+    },
+    {}
+  ]
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className='min-w-7 h-7 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm'>
+          <AlignLeftIcon className='size-4' />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className='p-1 flex flex-col gap-y-1'>
+        {alignments.map(({ label, value, icon: Icon }) => (
+          <button
+            key={value}
+            onClick={() => editor?.chain().focus().setTextAlign(value).run()}
+            className={cn(
+              'flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80',
+              editor?.getAttributes('textStyle')?.textAlign === value &&
+                'bg-neutral-200/80'
+            )}
+          >
+            <Icon className='size-4' />
+            {label}
+          </button>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
 
 // ImageButton
 const ImageButton = () => {
@@ -478,6 +574,10 @@ const Toolbar = () => {
       <LinkButton />
       {/* image */}
       <ImageButton />
+      {/* align */}
+      <AlignButton />
+      {/* list */}
+      <ListButton />
       <Separator
         orientation='vertical'
         className='h-6 bg-neutral-200'
