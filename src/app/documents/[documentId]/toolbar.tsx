@@ -59,6 +59,51 @@ import { Separator } from '@/components/ui/separator'
 import { ColorResult, CirclePicker, SketchPicker } from 'react-color'
 import { Button } from '@/components/ui/button'
 
+// LineHeightButton
+const LineHeightButton = () => {
+  const { editor } = useEditorStore()
+
+  const lists = [
+    {
+      label: 'Bullet List',
+      icon: ListIcon,
+      isActive: () => editor?.isActive('bulletList'),
+      onClick: () => editor?.chain().focus().toggleBulletList().run()
+    },
+    {
+      label: 'Ordered List',
+      icon: ListOrderedIcon,
+      isActive: () => editor?.isActive('orderedList'),
+      onClick: () => editor?.chain().focus().toggleOrderedList().run()
+    }
+  ]
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button className='min-w-7 h-7 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm'>
+          <ListIcon className='size-4' />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className='p-1 flex flex-col gap-y-1'>
+        {lists.map(({ label, isActive, onClick, icon: Icon }) => (
+          <button
+            key={label}
+            onClick={onClick}
+            className={cn(
+              'flex items-center gap-x-2 px-2 py-1 rounded-sm hover:bg-neutral-200/80',
+              isActive() && 'bg-neutral-200/80'
+            )}
+          >
+            <Icon className='size-4' />
+            <span className='text-sm'>{label}</span>
+          </button>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
 // FontSizeButton
 const FontSizeButton = () => {
   const { editor } = useEditorStore()
@@ -66,7 +111,7 @@ const FontSizeButton = () => {
   const currentFontSize =
     editor?.getAttributes('textStyle').fontSize?.replace('px', '') || '16'
 
-  const [fontSize, setFontSize] = useState(currentFontSize)
+  // const [fontSize, setFontSize] = useState(currentFontSize)
   const [inputValue, setInputValue] = useState(currentFontSize)
   const [isEditing, setIsEditing] = useState(false)
 
@@ -75,7 +120,7 @@ const FontSizeButton = () => {
 
     if (!isNaN(size) && size > 0) {
       editor?.chain().focus().setFontSize(`${size}px`).run()
-      setFontSize(newSize)
+      // setFontSize(newSize)
       setInputValue(newSize)
       setIsEditing(false)
     }
@@ -130,7 +175,7 @@ const FontSizeButton = () => {
         <button
           onClick={() => {
             setIsEditing(true)
-            setFontSize(currentFontSize)
+            // setFontSize(currentFontSize)
             setInputValue(currentFontSize)
           }}
           className='h-7 w-10 text-sm border border-neutral-400 rounded-sm bg-transparent cursor-text'
@@ -651,6 +696,7 @@ const Toolbar = () => {
       />
       {/* Font size */}
       <FontSizeButton />
+      <LineHeightButton />
       <Separator
         orientation='vertical'
         className='h-6 bg-neutral-200'

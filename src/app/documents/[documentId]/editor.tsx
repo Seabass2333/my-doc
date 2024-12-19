@@ -16,6 +16,7 @@ import { Color } from '@tiptap/extension-color'
 import Highlight from '@tiptap/extension-highlight'
 import Link from '@tiptap/extension-link'
 import { TextAlign } from '@tiptap/extension-text-align'
+import { lineHeightExtension } from '@/extensions/line-height'
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import { useEditorStore } from '@/store/use-editor-store'
@@ -81,7 +82,11 @@ const Editor = () => {
       TextAlign.configure({
         types: ['heading', 'paragraph']
       }),
-      FontSizeExtension
+      FontSizeExtension,
+      lineHeightExtension.configure({
+        types: ['heading', 'paragraph'],
+        defaultLineHeight: 'normal'
+      })
     ],
     content: `
         <img src="https://via.placeholder.com/300x100" alt="Placeholder" />
