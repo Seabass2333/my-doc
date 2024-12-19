@@ -21,6 +21,8 @@ import {
   ListTodoIcon,
   LucideIcon,
   MessageCircleIcon,
+  MinusIcon,
+  PlusIcon,
   PrinterIcon,
   Redo2Icon,
   RemoveFormattingIcon,
@@ -70,6 +72,7 @@ const FontSizeButton = () => {
 
   const updateFontSize = (newSize: string) => {
     const size = parseInt(newSize)
+
     if (!isNaN(size) && size > 0) {
       editor?.chain().focus().setFontSize(`${size}px`).run()
       setFontSize(newSize)
@@ -78,11 +81,70 @@ const FontSizeButton = () => {
     }
   }
 
-  const hndleInputChange = () => {
-    setInputValue()
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value)
   }
 
-  return <div>FontSize</div>
+  // const handleInputBlur = () => {
+  //   updateFontSize(inputValue)
+  // }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      updateFontSize(inputValue)
+      editor?.commands.focus()
+    }
+  }
+
+  const increment = () => {
+    const value = parseInt(fontSize) + 1
+    updateFontSize(value.toString())
+  }
+
+  const decrement = () => {
+    const value = parseInt(fontSize) - 1
+    if (value > 0) {
+      updateFontSize(value.toString())
+    }
+  }
+
+  return (
+    <div className='flex items-center gap-x-0.5'>
+      <button
+        onClick={decrement}
+        className='h-7 w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80'
+      >
+        <MinusIcon className='size-4' />
+      </button>
+      {isEditing ? (
+        <input
+          type='text'
+          value={inputValue}
+          onChange={handleInputChange}
+          // onBlur={handleInputBlur}
+          onKeyDown={handleKeyDown}
+          className='w-10 h-7 text-sm text-center border border-neutral-400 rounded-sm bg-transparent focus:outline-none focus:ring-0'
+        />
+      ) : (
+        <button
+          onClick={() => {
+            setIsEditing(true)
+            setFontSize(currentFontSize)
+          }}
+          className='h-7 w-10 text-sm border border-neutral-400 rounded-sm bg-transparent cursor-text'
+        >
+          {currentFontSize}
+        </button>
+      )}
+      <button
+        onClick={increment}
+        className='h-7 w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80'
+      >
+        <PlusIcon className='size-4' />
+      </button>
+    </div>
+  )
 }
 
 // ListButton
