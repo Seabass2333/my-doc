@@ -67,7 +67,7 @@ const FontSizeButton = () => {
     editor?.getAttributes('textStyle').fontSize?.replace('px', '') || '16'
 
   const [fontSize, setFontSize] = useState(currentFontSize)
-  const [inputValue, setInputValue] = useState(fontSize)
+  const [inputValue, setInputValue] = useState(currentFontSize)
   const [isEditing, setIsEditing] = useState(false)
 
   const updateFontSize = (newSize: string) => {
@@ -85,9 +85,9 @@ const FontSizeButton = () => {
     setInputValue(e.target.value)
   }
 
-  // const handleInputBlur = () => {
-  //   updateFontSize(inputValue)
-  // }
+  const handleInputBlur = () => {
+    updateFontSize(inputValue)
+  }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -98,12 +98,12 @@ const FontSizeButton = () => {
   }
 
   const increment = () => {
-    const value = parseInt(fontSize) + 1
+    const value = parseInt(currentFontSize) + 1
     updateFontSize(value.toString())
   }
 
   const decrement = () => {
-    const value = parseInt(fontSize) - 1
+    const value = parseInt(currentFontSize) - 1
     if (value > 0) {
       updateFontSize(value.toString())
     }
@@ -122,7 +122,7 @@ const FontSizeButton = () => {
           type='text'
           value={inputValue}
           onChange={handleInputChange}
-          // onBlur={handleInputBlur}
+          onBlur={handleInputBlur}
           onKeyDown={handleKeyDown}
           className='w-10 h-7 text-sm text-center border border-neutral-400 rounded-sm bg-transparent focus:outline-none focus:ring-0'
         />
@@ -131,6 +131,7 @@ const FontSizeButton = () => {
           onClick={() => {
             setIsEditing(true)
             setFontSize(currentFontSize)
+            setInputValue(currentFontSize)
           }}
           className='h-7 w-10 text-sm border border-neutral-400 rounded-sm bg-transparent cursor-text'
         >
