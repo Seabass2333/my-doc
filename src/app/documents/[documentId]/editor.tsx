@@ -19,6 +19,7 @@ import { TextAlign } from '@tiptap/extension-text-align'
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import { useEditorStore } from '@/store/use-editor-store'
+import { FontSizeExtension } from '@/extensions/font-size'
 
 const Editor = () => {
   const { setEditor } = useEditorStore()

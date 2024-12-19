@@ -57,6 +57,34 @@ import { Separator } from '@/components/ui/separator'
 import { ColorResult, CirclePicker, SketchPicker } from 'react-color'
 import { Button } from '@/components/ui/button'
 
+// FontSizeButton
+const FontSizeButton = () => {
+  const { editor } = useEditorStore()
+
+  const currentFontSize =
+    editor?.getAttributes('textStyle').fontSize?.replace('px', '') || '16'
+
+  const [fontSize, setFontSize] = useState(currentFontSize)
+  const [inputValue, setInputValue] = useState(fontSize)
+  const [isEditing, setIsEditing] = useState(false)
+
+  const updateFontSize = (newSize: string) => {
+    const size = parseInt(newSize)
+    if (!isNaN(size) && size > 0) {
+      editor?.chain().focus().setFontSize(`${size}px`).run()
+      setFontSize(newSize)
+      setInputValue(newSize)
+      setIsEditing(false)
+    }
+  }
+
+  const hndleInputChange = () => {
+    setInputValue()
+  }
+
+  return <div>FontSize</div>
+}
+
 // ListButton
 const ListButton = () => {
   const { editor } = useEditorStore()
@@ -558,7 +586,8 @@ const Toolbar = () => {
         orientation='vertical'
         className='h-6 bg-neutral-200'
       />
-      {/* TODO: Font size */}
+      {/* Font size */}
+      <FontSizeButton />
       <Separator
         orientation='vertical'
         className='h-6 bg-neutral-200'
