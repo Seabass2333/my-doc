@@ -38,7 +38,7 @@ export const Ruler = () => {
 
           setLeftMargin(newLeftPosition) // TODO: make collaborative
         } else if (isDraggingRight) {
-          const maxRightPosition = PAGE_WIDTH - leftMargin + MARGIN_THRESHOLD
+          const maxRightPosition = PAGE_WIDTH - leftMargin - MARGIN_THRESHOLD
           const newRightPosition = Math.max(PAGE_WIDTH - rawPosition, 0)
           const constrainedRightPosition = Math.min(
             maxRightPosition,
