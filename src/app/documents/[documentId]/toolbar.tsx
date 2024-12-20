@@ -310,7 +310,6 @@ const ImageButton = () => {
   }
 
   const handleAddImage = () => {
-    console.log('add image')
     const input = document.createElement('input')
     input.type = 'file'
     input.accept = 'image/*'
