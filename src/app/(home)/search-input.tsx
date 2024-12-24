@@ -41,7 +41,7 @@ export const SearchInput = () => {
           value={value}
           onChange={handleChange}
           placeholder='Search'
-          className='md:text-base placeholder:text-neutral-800 px-14 w-full border-none focus-visible:shadow-[0_1px_1px_0_rgba(65,69,73,.3),0_1px_3px_1px_rgba(65,69,73,.14)] bg-[#f0f4f8] rounded-full h-[48px] focus-visible:ring-0 focus:bg-white'
+          className='md:text-base placeholder:text-neutral-500 px-14 w-full border-none focus-visible:shadow-[0_1px_1px_0_rgba(65,69,73,.3),0_1px_3px_1px_rgba(65,69,73,.14)] bg-[#f0f4f8] rounded-full h-[48px] focus-visible:ring-0 focus:bg-white'
         />
         <Button
           type='submit'
