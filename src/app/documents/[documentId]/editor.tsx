@@ -89,34 +89,7 @@ const Editor = () => {
         types: ['heading', 'paragraph'],
         defaultLineHeight: 'normal'
       })
-    ],
-    content: `
-        <img src="https://via.placeholder.com/300x100" alt="Placeholder" />
-        <table>
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th colspan="3">Description</th>
-            </tr>
-            <tr>
-              <td>Cyndi Lauper</td>
-              <td>Singer</td>
-              <td>Songwriter</td>
-              <td>Actress</td>
-            </tr>
-          </tbody>
-        </table>
-        <br />
-        <p>
-          <a href="https://www.google.com">Google</a>
-        </p>
-        1. China
-        2. Japan
-        3. Sri Lanka
-        4. Hong Hong
-
-        <br />
-      `
+    ]
   })
 
   return (
