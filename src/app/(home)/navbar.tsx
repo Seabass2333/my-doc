@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { UserButton } from '@clerk/nextjs'
+
 import { SearchInput } from './search-input'
 
 const Navbar = () => {
@@ -17,6 +19,7 @@ const Navbar = () => {
         <h3 className='text-lg font-semibold'>Document Editor</h3>
       </div>
       <SearchInput />
+      <UserButton />
       <div />
     </nav>
   )

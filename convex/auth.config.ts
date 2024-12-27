@@ -1,8 +1,10 @@
-export const authConfig = {
+const authConfig = {
   providers: [
     {
-      domain: 'https://grateful-catfish-4.clerk.accounts.dev',
+      domain: 'https://grateful-catfish-4.clerk.accounts.dev/',
       applicationID: 'convex',
-    }
+    },
   ]
 };
+
+export default authConfig;
