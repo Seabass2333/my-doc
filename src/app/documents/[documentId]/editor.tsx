@@ -23,33 +23,35 @@ import { useEditorStore } from '@/store/use-editor-store'
 import { FontSizeExtension } from '@/extensions/font-size'
 import { Ruler } from './ruler'
 
+import { type Editor as EditorType } from '@tiptap/react'
+
 const Editor = () => {
   const { setEditor } = useEditorStore()
 
   const editor = useEditor({
     immediatelyRender: false,
-    onCreate({ editor }) {
+    onCreate({ editor }: { editor: EditorType }) {
       setEditor(editor)
     },
     onDestroy() {
       setEditor(null)
     },
-    onUpdate({ editor }) {
+    onUpdate({ editor }: { editor: EditorType }) {
       setEditor(editor)
     },
-    onSelectionUpdate({ editor }) {
+    onSelectionUpdate({ editor }: { editor: EditorType }) {
       setEditor(editor)
     },
-    onTransaction({ editor }) {
+    onTransaction({ editor }: { editor: EditorType }) {
       setEditor(editor)
     },
-    onBlur({ editor }) {
+    onBlur({ editor }: { editor: EditorType }) {
       setEditor(editor)
     },
-    onFocus({ editor }) {
+    onFocus({ editor }: { editor: EditorType }) {
       setEditor(editor)
     },
-    onContentError({ editor }) {
+    onContentError({ editor }: { editor: EditorType }) {
       setEditor(editor)
     },
     editorProps: {
