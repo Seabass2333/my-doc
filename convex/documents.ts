@@ -1,4 +1,4 @@
-import { v, ConvexError } from 'convex/values'
+import { v } from 'convex/values'
 import { paginationOptsValidator } from 'convex/server'
 
 import { mutation, query } from './_generated/server'
@@ -27,5 +27,27 @@ export const getDocuments = query({
   args: { paginationOpts: paginationOptsValidator },
   handler: async (ctx, args) => {
     return await ctx.db.query('documents').paginate(args.paginationOpts);
+  }
+})
+
+export const removeById = mutation({
+  args: { id: v.id('documents') },
+  handler: async (ctx, args) => {
+    const user = await ctx.auth.getUserIdentity()
+
+    if (!user) {
+      throw new Error('Unauthorized')
+    }
+
+    const document = await ctx.db.get(args.id)
+    if (!document) {
+      throw new Error('Document not found')
+    }
+
+    if (document.ownerId !== user.subject) {
+      throw new Error('Unauthorized')
+    }
+
+    return await ctx.db.delete(args.id)
   }
 })

@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/table'
 import { Doc } from '../../../convex/_generated/dataModel'
 import { LoaderIcon } from 'lucide-react'
+import DocumentRow from './document-row'
 
 interface DocumentsTableProps {
   documents: Doc<'documents'>[] | undefined
@@ -32,9 +33,10 @@ const DocumentsTable = ({
         <Table>
           <TableHeader>
             <TableRow className='hover:bg-transparent border-none'>
-              <TableHead>Title</TableHead>
-              <TableHead>Shared With</TableHead>
-              <TableHead>Created At</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead></TableHead>
+              <TableHead className='hidden md:table-cell'>Shared</TableHead>
+              <TableHead className='hidden md:table-cell'>Created At</TableHead>
             </TableRow>
           </TableHeader>
           {documents.length === 0 ? (
@@ -51,9 +53,10 @@ const DocumentsTable = ({
           ) : (
             <TableBody>
               {documents.map((document) => (
-                <TableRow key={document._id}>
-                  <TableCell>{document.title}</TableCell>
-                </TableRow>
+                <DocumentRow
+                  key={document._id}
+                  document={document}
+                />
               ))}
             </TableBody>
           )}
