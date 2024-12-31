@@ -9,9 +9,9 @@ export default defineSchema({
     roomId: v.optional(v.string()),
     organizationId: v.optional(v.string()),
   })
-    .index('by_owner', ['ownerId'])
-    .index('by_organization', ['organizationId'])
-    .searchIndex('search_index', {
+    .index('by_owner_id', ['ownerId'])
+    .index('by_organization_id', ['organizationId'])
+    .searchIndex('search_context', {
       searchField: 'title',
       filterFields: ['ownerId', 'organizationId'],
     }),

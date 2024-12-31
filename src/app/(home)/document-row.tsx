@@ -3,25 +3,32 @@ import { SiGoogledocs } from 'react-icons/si'
 import { format } from 'date-fns'
 
 import { Doc } from '../../../convex/_generated/dataModel'
-import {
-  Building2Icon,
-  CircleUserIcon,
-} from 'lucide-react'
+import { Building2Icon, CircleUserIcon } from 'lucide-react'
 
 import DocumentMenu from './document-menu'
+import { useRouter } from 'next/navigation'
 
 interface DocumentRowProps {
   document: Doc<'documents'>
 }
 
 const DocumentRow = ({ document }: DocumentRowProps) => {
+  const router = useRouter()
+
   const onNewTabClick = (id: string) => {
     // console.log('new tab clicked')
     window.open(`/documents/${id}`, '_blank')
   }
 
+  const onRowClick = (id: string) => {
+    router.push(`/documents/${id}`)
+  }
+
   return (
-    <TableRow className='cursor-pointer hover:bg-gray-100'>
+    <TableRow
+      className='cursor-pointer hover:bg-gray-100'
+      onClick={() => onRowClick(document._id)}
+    >
       <TableCell className='w-[50px]'>
         <SiGoogledocs className='size-6 fill-blue-500' />
       </TableCell>

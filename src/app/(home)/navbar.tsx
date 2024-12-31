@@ -12,11 +12,11 @@ const Navbar = () => {
           <Image
             src='/logo.svg'
             alt='logo'
-            width={36}
-            height={36}
+            width={42}
+            height={42}
           />
         </Link>
-        <h3 className='text-lg font-semibold'>Document Editor</h3>
+        <h3 className='text-lg font-semibold'>My Docs</h3>
       </div>
       <SearchInput />
       <UserButton />
