@@ -14,6 +14,7 @@ export const create = mutation({
     if (!user) {
       throw new Error('Unauthorized')
     }
+
     return await ctx.db.insert('documents', {
       title: args.title ?? 'Untitled',
       initialContent: args.initialContent ?? '',
@@ -32,6 +33,15 @@ export const getDocuments = query({
     }
 
     const { search, paginationOpts } = args
+
+    const organizationId = (user.organization_id ?? undefined) as string | undefined
+    if (search && organizationId) {
+      return await ctx.db
+        .query('documents')
+        .withSearchIndex('search_context', (q) => q.search('title', search).eq('ownerId', user.subject))
+        .paginate(paginationOpts)
+    }
+
     if (search) {
       return await ctx.db
         .query('documents')
