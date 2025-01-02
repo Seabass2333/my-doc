@@ -17,6 +17,7 @@ import Highlight from '@tiptap/extension-highlight'
 import Link from '@tiptap/extension-link'
 import { TextAlign } from '@tiptap/extension-text-align'
 import { lineHeightExtension } from '@/extensions/line-height'
+import { useLiveblocksExtension } from '@liveblocks/react-tiptap'
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import { useEditorStore } from '@/store/use-editor-store'
@@ -26,6 +27,7 @@ import { Ruler } from './ruler'
 import { type Editor as EditorType } from '@tiptap/react'
 
 const Editor = () => {
+  const liveblocks = useLiveblocksExtension()
   const { setEditor } = useEditorStore()
 
   const editor = useEditor({
@@ -62,6 +64,7 @@ const Editor = () => {
       }
     },
     extensions: [
+      liveblocks,
       StarterKit,
       TaskList,
       TaskItem,

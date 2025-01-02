@@ -543,12 +543,12 @@ const FontFamilyButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <button className='w-[120px] h-7 shrink-0 flex items-center justify-between rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm'>
+        <span className='w-[120px] h-7 shrink-0 flex items-center justify-between rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm'>
           <span className='truncate'>
             {editor?.getAttributes('textStyle')?.fontFamily || 'Arial'}
           </span>
           <ChevronDownIcon className='size-4 ml-2 shrink-0' />
-        </button>
+        </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='p-1 flex flex-col gap-y-1'>
         {fonts.map(({ label, value }) => (
