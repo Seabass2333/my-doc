@@ -1,8 +1,8 @@
 'use client'
 
-import { useMutation } from 'convex/react'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { useMutation } from 'convex/react'
+import { toast } from 'sonner'
 
 import {
   AlertDialog,
@@ -29,12 +29,24 @@ export const RemoveDialog: React.FC<RemoveDialogProps> = ({
   children
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const removeDocument = useMutation(api.documents.removeById)
-  const router = useRouter()
+  const [isRemoving, setIsRemoving] = useState(false)
 
-  const handleRemove = async () => {
-    await removeDocument({ id: documentId })
-    router.refresh()
+  // Remove document mutation
+  const removeDocument = useMutation(api.documents.removeById)
+
+  // Handle remove document
+  const handleRemove = () => {
+    setIsRemoving(true)
+    removeDocument({ id: documentId })
+      .then(() => {
+        toast.success('Document deleted')
+      })
+      .catch((error) => {
+        toast.error(error.message)
+      })
+      .finally(() => {
+        setIsRemoving(false)
+      })
   }
 
   return (
@@ -57,7 +69,12 @@ export const RemoveDialog: React.FC<RemoveDialogProps> = ({
           <AlertDialogCancel onClick={(e) => e.stopPropagation()}>
             Cancel
           </AlertDialogCancel>
-          <AlertDialogAction onClick={handleRemove}>Remove</AlertDialogAction>
+          <AlertDialogAction
+            onClick={handleRemove}
+            disabled={isRemoving}
+          >
+            Delete
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

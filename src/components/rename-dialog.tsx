@@ -1,7 +1,8 @@
 'use client'
 
-import { useMutation } from 'convex/react'
 import { useState } from 'react'
+import { useMutation } from 'convex/react'
+import { toast } from 'sonner'
 
 import {
   Dialog,
@@ -35,15 +36,23 @@ export const RenameDialog: React.FC<RenameDialogProps> = ({
 
   const updateDocument = useMutation(api.documents.updateById)
 
-  const handleRename = async () => {
+  const handleRename = () => {
     setIsUpdating(true)
-    await updateDocument({
+    updateDocument({
       id: documentId,
       title: newTitle.trim(),
       content: ''
     })
-    setIsUpdating(false)
-    setIsOpen(false)
+      .then(() => {
+        toast.success('Document renamed')
+      })
+      .catch(() => {
+        toast.error('Failed to rename document')
+      })
+      .finally(() => {
+        setIsUpdating(false)
+        setIsOpen(false)
+      })
   }
 
   return (

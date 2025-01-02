@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { useMutation } from 'convex/react'
+import { cn } from '@/lib/utils'
+import { toast } from 'sonner'
 
 import { templates } from '@/constants/templates'
 import {
@@ -26,14 +27,22 @@ const TemplateGallery = () => {
   const create = useMutation(api.documents.create)
   const [isCreating, setIsCreating] = useState(false)
 
-  const onTemplateClick = async (template: Template) => {
+  const onTemplateClick = (template: Template) => {
     setIsCreating(true)
-    const documentId = await create({
+    create({
       title: template.title,
       initialContent: template.content
     })
-    router.push(`/documents/${documentId}`)
-    setIsCreating(false)
+      .then((documentId) => {
+        toast.success('Document created')
+        router.push(`/documents/${documentId}`)
+      })
+      .catch((error) => {
+        toast.error(error.message)
+      })
+      .finally(() => {
+        setIsCreating(false)
+      })
   }
 
   return (
