@@ -30,18 +30,17 @@ export async function POST(request: Request) {
   }
 
   const isOwner = document.ownerId === user.id
-  const isOrganizationMember =
-    document.organizationId &&
-    document.organizationId === sessionClaims.org_id
+  const isOrganizationMember = !!(document.organizationId && document.organizationId === sessionClaims.org_id)
 
   if (!isOwner && !isOrganizationMember) {
     return new Response('Unauthorized', { status: 401 })
   }
 
-  const session = await liveblocks.prepareSession(user.id, {
+  const session = liveblocks.prepareSession(user.id, {
     userInfo: {
-      name: user.fullName ?? 'Anonymous',
-      avatarUrl: user.imageUrl
+      name: user.fullName ?? user.username ?? user.emailAddresses[0].emailAddress ?? 'Anonymous',
+      email: user.emailAddresses[0].emailAddress,
+      avatar: user.imageUrl
     }
   })
   session.allow(room, session.FULL_ACCESS)

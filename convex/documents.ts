@@ -97,7 +97,10 @@ export const removeById = mutation({
       throw new ConvexError('Document not found')
     }
 
-    if (document.ownerId !== user.subject && document.organizationId && document.organizationId !== organizationId && organizationRole !== 'admin') {
+    const isOwner = document.ownerId === user.subject
+    const isOrganizationMember = !!(document.organizationId && document.organizationId === organizationId)
+
+    if (!isOwner && !isOrganizationMember && organizationRole !== 'admin') {
       throw new ConvexError('Unauthorized')
     }
 
@@ -122,7 +125,10 @@ export const updateById = mutation({
       throw new ConvexError('Document not found')
     }
 
-    if (document.ownerId !== user.subject && document.organizationId && document.organizationId !== organizationId && organizationRole !== 'admin') {
+    const isOwner = document.ownerId === user.subject
+    const isOrganizationMember = !!(document.organizationId && document.organizationId === organizationId)
+
+    if (!isOwner && !isOrganizationMember && organizationRole !== 'admin') {
       throw new ConvexError('Unauthorized')
     }
 
