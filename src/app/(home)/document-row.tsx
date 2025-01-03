@@ -16,7 +16,6 @@ const DocumentRow = ({ document }: DocumentRowProps) => {
   const router = useRouter()
 
   const onNewTabClick = (id: string) => {
-    // console.log('new tab clicked')
     window.open(`/documents/${id}`, '_blank')
   }
 

@@ -321,7 +321,6 @@ const ImageButton = () => {
         onChange(url)
       }
     }
-    console.log(input)
 
     input.click()
   }

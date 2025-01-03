@@ -9,8 +9,6 @@ interface DocumentPageProps {
 const DocumentPage = async ({ params }: DocumentPageProps) => {
   const { documentId } = await params
 
-  console.log(documentId)
-
   return (
     <Room>
       <div className='min-h-screen bg-[#FAFBFD]'>
@@ -19,9 +17,7 @@ const DocumentPage = async ({ params }: DocumentPageProps) => {
           <Toolbar />
         </div>
         <div className='pt-[124px] print:pt-0'>
-          <Room>
-            <Editor />
-          </Room>
+          <Editor />
         </div>
       </div>
     </Room>

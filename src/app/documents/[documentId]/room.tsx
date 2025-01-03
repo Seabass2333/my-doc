@@ -15,7 +15,6 @@ import { toast } from 'sonner'
 type User = {
   id: string
   name: string
-  email: string
   avatar: string
 }
 
@@ -29,8 +28,7 @@ export function Room({ children }: { children: ReactNode }) {
       try {
         const users = await getUsers()
         setUsers(users)
-      } catch (error) {
-        console.error('Error fetching users:', error)
+      } catch {
         toast.error('Error fetching users')
       }
     },

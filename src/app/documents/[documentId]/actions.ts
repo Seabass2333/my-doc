@@ -7,17 +7,15 @@ export async function getUsers() {
   const clerk = await clerkClient()
 
   const response = await clerk.users.getUserList({
-    organizationId: [sessionClaims?.orgId as string]
+    organizationId: sessionClaims?.org_id ? [sessionClaims.org_id] : undefined
   })
 
   const users = response.data.map((user) => ({
     id: user.id,
     name:
       user.fullName ??
-      user.username ??
-      user.emailAddresses[0].emailAddress ??
+      user.primaryEmailAddress?.emailAddress ??
       'Unknown',
-    email: user.emailAddresses[0].emailAddress,
     avatar: user.imageUrl
   }))
 
