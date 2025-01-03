@@ -663,8 +663,10 @@ const Toolbar = () => {
       {
         label: 'Comment',
         icon: MessageCircleIcon,
-        onClick: () => console.log('comment'),
-        isActive: false
+        onClick: () => {
+          editor?.chain().focus().addPendingComment().run()
+        },
+        isActive: editor?.isActive('pendingComment')
       },
       {
         label: 'List Todo',
