@@ -37,12 +37,16 @@ import {
   AlignRightIcon,
   RemoveFormattingIcon
 } from 'lucide-react'
+import { useMutation } from 'convex/react'
 import { BsFilePdf } from 'react-icons/bs'
 import { useEditorStore } from '@/store/use-editor-store'
 import { OrganizationSwitcher, UserButton } from '@clerk/nextjs'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 import { Inbox } from './inbox'
 import { Avatars } from './avatars'
+import { api } from '../../../../convex/_generated/api'
 import { Doc } from '../../../../convex/_generated/dataModel'
 
 interface NavbarProps {
@@ -50,7 +54,21 @@ interface NavbarProps {
 }
 
 export const Navbar = ({ data }: NavbarProps) => {
+  const router = useRouter()
   const { editor } = useEditorStore()
+
+  const mutation = useMutation(api.documents.updateById)
+
+  const onNewDocument = () => {
+    mutation({ title: 'New Document', initialContent: '' })
+      .catch(() => {
+        toast.error('Failed to create new document')
+      })
+      .then((id) => {
+        toast.success('New document created')
+        router.push(`/documents/${id}`)
+      })
+  }
 
   const insertTable = (rows: number, cols: number) => {
     editor
@@ -115,7 +133,10 @@ export const Navbar = ({ data }: NavbarProps) => {
           />
         </Link>
         <div className='flex flex-col'>
-          <DocumentInput title={data.title} id={data._id} />
+          <DocumentInput
+            title={data.title}
+            id={data._id}
+          />
           <div className='flex'>
             <Menubar className='border-none bg-transparent shadow-none h-auto p-0'>
               {/* file */}
@@ -148,7 +169,7 @@ export const Navbar = ({ data }: NavbarProps) => {
                       </MenubarItem>
                     </MenubarSubContent>
                   </MenubarSub>
-                  <MenubarItem>
+                  <MenubarItem onClick={onNewDocument}>
                     <FilePlusIcon className='size-4 mr-2' />
                     New Document
                   </MenubarItem>

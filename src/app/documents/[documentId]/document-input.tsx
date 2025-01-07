@@ -1,10 +1,14 @@
 import { useRef, useState } from 'react'
 import { useMutation } from 'convex/react'
 import { BsCloudCheck } from 'react-icons/bs'
+import { useStatus } from '@liveblocks/react'
+import { toast } from 'sonner'
+
 import { useDebounce } from '@/hooks/use-debounce'
+
 import { Id } from '../../../../convex/_generated/dataModel'
 import { api } from '../../../../convex/_generated/api'
-import { toast } from 'sonner'
+import { LoaderIcon } from 'lucide-react'
 
 interface DocumentInputProps {
   title: string
@@ -12,6 +16,8 @@ interface DocumentInputProps {
 }
 
 export const DocumentInput = ({ title, id }: DocumentInputProps) => {
+  const status = useStatus()
+
   const [value, setValue] = useState(title)
   const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -61,6 +67,10 @@ export const DocumentInput = ({ title, id }: DocumentInputProps) => {
       })
   }
 
+  const showLoader =
+    isSaving || status === 'connecting' || status === 'reconnecting'
+  const showError = status === 'disconnected'
+
   return (
     <div className='flex items-center gap-2'>
       {isEditing ? (
@@ -92,7 +102,11 @@ export const DocumentInput = ({ title, id }: DocumentInputProps) => {
           {title}
         </span>
       )}
-      <BsCloudCheck />
+      {showError && <BsCloudCheck className='size-4 text-red-500' />}
+      {!showLoader && !showError && <BsCloudCheck className='size-4' />}
+      {showLoader && (
+        <LoaderIcon className='size-4 animate-spin text-muted-foreground' />
+      )}
     </div>
   )
 }
