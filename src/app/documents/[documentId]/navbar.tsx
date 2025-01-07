@@ -43,8 +43,13 @@ import { OrganizationSwitcher, UserButton } from '@clerk/nextjs'
 
 import { Inbox } from './inbox'
 import { Avatars } from './avatars'
+import { Doc } from '../../../../convex/_generated/dataModel'
 
-export const Navbar = () => {
+interface NavbarProps {
+  data: Doc<'documents'>
+}
+
+export const Navbar = ({ data }: NavbarProps) => {
   const { editor } = useEditorStore()
 
   const insertTable = (rows: number, cols: number) => {
@@ -71,7 +76,7 @@ export const Navbar = () => {
     const blob = new Blob([JSON.stringify(content)], {
       type: 'application/json'
     })
-    onDownload(blob, 'document.json')
+    onDownload(blob, `${data.title}.json`)
   }
 
   const onSaveHtml = () => {
@@ -79,7 +84,7 @@ export const Navbar = () => {
 
     const content = editor?.getHTML()
     const blob = new Blob([content], { type: 'text/html' })
-    onDownload(blob, 'document.html')
+    onDownload(blob, `${data.title}.html`)
   }
 
   const onSavePdf = () => {
@@ -87,7 +92,7 @@ export const Navbar = () => {
 
     const content = editor?.getHTML()
     const blob = new Blob([content], { type: 'application/pdf' })
-    onDownload(blob, 'document.pdf')
+    onDownload(blob, `${data.title}.pdf`)
   }
 
   const onSaveText = () => {
@@ -95,7 +100,7 @@ export const Navbar = () => {
 
     const content = editor?.getText()
     const blob = new Blob([content], { type: 'text/plain' })
-    onDownload(blob, 'document.txt')
+    onDownload(blob, `${data.title}.txt`)
   }
 
   return (
@@ -110,7 +115,7 @@ export const Navbar = () => {
           />
         </Link>
         <div className='flex flex-col'>
-          <DocumentInput />
+          <DocumentInput title={data.title} id={data._id} />
           <div className='flex'>
             <Menubar className='border-none bg-transparent shadow-none h-auto p-0'>
               {/* file */}

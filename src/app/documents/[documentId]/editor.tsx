@@ -21,6 +21,7 @@ import { lineHeightExtension } from '@/extensions/line-height'
 import { useLiveblocksExtension } from '@liveblocks/react-tiptap'
 import { useEditor, EditorContent } from '@tiptap/react'
 import { useEditorStore } from '@/store/use-editor-store'
+import { useStorage } from '@liveblocks/react/suspense'
 
 import { type Editor as EditorType } from '@tiptap/react'
 
@@ -31,6 +32,13 @@ import { Threads } from './threads'
 const Editor = () => {
   const liveblocks = useLiveblocksExtension()
   const { setEditor } = useEditorStore()
+
+  const { leftMargin, rightMargin } = useStorage(
+    (root: { leftMargin: number; rightMargin: number }) => ({
+      leftMargin: root.leftMargin,
+      rightMargin: root.rightMargin
+    })
+  )
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -60,7 +68,7 @@ const Editor = () => {
     },
     editorProps: {
       attributes: {
-        style: 'padding-left: 56px; padding-right: 56px;',
+        style: `padding-left: ${leftMargin}px; padding-right: ${rightMargin}px;`,
         class:
           'focus:outline-none print:border-0 bg-white border border-[#c7c7c7] flex flex-col min-h-[1054px] w-[816px] pt-10 pr-14 pb-10 cursor-text'
       }
