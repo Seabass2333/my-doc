@@ -1,5 +1,6 @@
 'use client'
 
+// extensions
 import StarterKit from '@tiptap/starter-kit'
 import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
@@ -18,27 +19,37 @@ import Link from '@tiptap/extension-link'
 import { TextAlign } from '@tiptap/extension-text-align'
 import { FontSizeExtension } from '@/extensions/font-size'
 import { lineHeightExtension } from '@/extensions/line-height'
+
+// components
+import { Ruler } from './ruler'
+import { Threads } from './threads'
+
+// hooks
 import { useLiveblocksExtension } from '@liveblocks/react-tiptap'
 import { useEditor, EditorContent } from '@tiptap/react'
 import { useEditorStore } from '@/store/use-editor-store'
 import { useStorage } from '@liveblocks/react/suspense'
 
+// types
 import { type Editor as EditorType } from '@tiptap/react'
 
-import { Ruler } from './ruler'
+interface EditorProps {
+  initialContent?: string
+}
 
-import { Threads } from './threads'
-
-const Editor = () => {
-  const liveblocks = useLiveblocksExtension()
-  const { setEditor } = useEditorStore()
-
+const Editor = ({ initialContent }: EditorProps) => {
   const { leftMargin, rightMargin } = useStorage(
     (root: { leftMargin: number; rightMargin: number }) => ({
       leftMargin: root.leftMargin,
       rightMargin: root.rightMargin
     })
   )
+
+  const { setEditor } = useEditorStore()
+  const liveblocks = useLiveblocksExtension({
+    initialContent,
+    offlineSupport_experimental: true
+  })
 
   const editor = useEditor({
     immediatelyRender: false,

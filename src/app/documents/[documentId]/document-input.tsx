@@ -11,8 +11,8 @@ import { api } from '../../../../convex/_generated/api'
 import { LoaderIcon } from 'lucide-react'
 
 interface DocumentInputProps {
-  title: string
   id: Id<'documents'>
+  title: string
 }
 
 export const DocumentInput = ({ title, id }: DocumentInputProps) => {
@@ -31,7 +31,7 @@ export const DocumentInput = ({ title, id }: DocumentInputProps) => {
     if (newValue === title) return
 
     setIsSaving(true)
-    mutation({ id, title: newValue, content: '' })
+    mutation({ id, title: newValue })
       .then(() => {
         toast.success('Document title updated')
       })
@@ -53,7 +53,7 @@ export const DocumentInput = ({ title, id }: DocumentInputProps) => {
     e.preventDefault()
 
     setIsSaving(true)
-    mutation({ id, title: value, content: '' })
+    mutation({ id, title: value })
       .then(() => {
         toast.success('Document title updated')
         setIsEditing(false)

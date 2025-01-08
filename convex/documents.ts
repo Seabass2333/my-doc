@@ -139,7 +139,7 @@ export const removeById = mutation({
 
 // Update a document by id
 export const updateById = mutation({
-  args: { id: v.id('documents'), title: v.string(), content: v.string() },
+  args: { id: v.id('documents'), title: v.string(), content: v.optional(v.string()) },
   handler: async (ctx, args) => {
     const user = await ctx.auth.getUserIdentity()
     if (!user) {

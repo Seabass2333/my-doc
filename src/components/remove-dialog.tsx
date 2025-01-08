@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useMutation } from 'convex/react'
 import { toast } from 'sonner'
 
@@ -28,7 +29,7 @@ export const RemoveDialog: React.FC<RemoveDialogProps> = ({
   documentId,
   children
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
   const [isRemoving, setIsRemoving] = useState(false)
 
   // Remove document mutation
@@ -40,6 +41,7 @@ export const RemoveDialog: React.FC<RemoveDialogProps> = ({
     removeDocument({ id: documentId })
       .then(() => {
         toast.success('Document deleted')
+        router.push('/')
       })
       .catch((error) => {
         toast.error(error.message)
@@ -50,10 +52,7 @@ export const RemoveDialog: React.FC<RemoveDialogProps> = ({
   }
 
   return (
-    <AlertDialog
-      open={isOpen}
-      onOpenChange={setIsOpen}
-    >
+    <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
 
       <AlertDialogContent onClick={(e) => e.stopPropagation()}>

@@ -283,5 +283,5 @@ body {
 }
 
 div[data-radix-popper-content-wrapper] {
-  z-index: 99 !important;
+  z-index: 10 !important;
 }
