@@ -21,7 +21,6 @@ export const DocumentInput = ({ title, id }: DocumentInputProps) => {
   const [value, setValue] = useState(title)
   const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
-  const [isError, setIsError] = useState(false)
 
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -36,7 +35,6 @@ export const DocumentInput = ({ title, id }: DocumentInputProps) => {
         toast.success('Document title updated')
       })
       .catch(() => {
-        setIsError(true)
         toast.error('Failed to update document title')
       })
       .finally(() => {
@@ -59,7 +57,6 @@ export const DocumentInput = ({ title, id }: DocumentInputProps) => {
         setIsEditing(false)
       })
       .catch(() => {
-        setIsError(true)
         toast.error('Failed to update document title')
       })
       .finally(() => {

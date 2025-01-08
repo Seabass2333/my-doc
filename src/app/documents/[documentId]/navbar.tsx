@@ -47,7 +47,7 @@ import { useRouter } from 'next/navigation'
 import { Inbox } from './inbox'
 import { Avatars } from './avatars'
 import { api } from '../../../../convex/_generated/api'
-import { Doc, Id } from '../../../../convex/_generated/dataModel'
+import { Doc } from '../../../../convex/_generated/dataModel'
 import { RemoveDialog } from '@/components/remove-dialog'
 import { RenameDialog } from '@/components/rename-dialog'
 

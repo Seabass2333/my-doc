@@ -36,10 +36,17 @@ export async function POST(request: Request) {
     return new Response('Unauthorized', { status: 401 })
   }
 
+  // generate a special color for every user
+  const name = user.fullName ?? user.primaryEmailAddress?.emailAddress ?? 'Anonymous'
+  const nameToNumber = name.split(' ').reduce((acc, word) => acc + word.charCodeAt(0), 0)
+  const hue = Math.abs(nameToNumber % 360)
+  const color = `hsl(${hue}, 100%, 50%)`
+
   const session = liveblocks.prepareSession(user.id, {
     userInfo: {
-      name: user.fullName ?? user.primaryEmailAddress?.emailAddress ?? 'Anonymous',
-      avatar: user.imageUrl
+      name,
+      avatar: user.imageUrl,
+      color
     }
   })
   session.allow(room, session.FULL_ACCESS)

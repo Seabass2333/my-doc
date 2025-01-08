@@ -4,6 +4,7 @@ import { ClientSideSuspense } from '@liveblocks/react'
 import { useOthers, useSelf } from '@liveblocks/react/suspense'
 
 import { Separator } from '@/components/ui/separator'
+import Image from 'next/image'
 
 const AVATAR_SIZE = 36
 
@@ -64,7 +65,7 @@ export function Avatar({ src, name }: AvatarProps) {
       <div className='opacity-0 group-hover:opacity-100 absolute top-full py-1 px-2 text-white text-xs rounded-lg mt-2.5 z-10 bg-black/60 whitespace-nowrap transition-opacity duration-300 flex items-center justify-center'>
         {name}
       </div>
-      <img
+      <Image
         src={src}
         alt={name}
         width={AVATAR_SIZE}

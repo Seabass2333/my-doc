@@ -27,7 +27,8 @@ export async function getUsers() {
       user.fullName ??
       user.primaryEmailAddress?.emailAddress ??
       'Unknown',
-    avatar: user.imageUrl
+    avatar: user.imageUrl,
+    color: ''
   }))
 
   return users
