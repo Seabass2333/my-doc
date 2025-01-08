@@ -30,6 +30,13 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import { useEditorStore } from '@/store/use-editor-store'
 import { useStorage } from '@liveblocks/react/suspense'
 
+// constants
+import {
+  LEFT_MARGIN_DEFAULT,
+  RIGHT_MARGIN_DEFAULT,
+  PAGE_WIDTH
+} from '@/constants/consts'
+
 // types
 import { type Editor as EditorType } from '@tiptap/react'
 
@@ -38,12 +45,13 @@ interface EditorProps {
 }
 
 const Editor = ({ initialContent }: EditorProps) => {
-  const { leftMargin, rightMargin } = useStorage(
-    (root: { leftMargin: number; rightMargin: number }) => ({
-      leftMargin: root.leftMargin,
-      rightMargin: root.rightMargin
-    })
-  )
+  const {
+    leftMargin = LEFT_MARGIN_DEFAULT,
+    rightMargin = RIGHT_MARGIN_DEFAULT
+  } = useStorage((root: { leftMargin: number; rightMargin: number }) => ({
+    leftMargin: root.leftMargin,
+    rightMargin: root.rightMargin
+  }))
 
   const { setEditor } = useEditorStore()
   const liveblocks = useLiveblocksExtension({
@@ -80,8 +88,7 @@ const Editor = ({ initialContent }: EditorProps) => {
     editorProps: {
       attributes: {
         style: `padding-left: ${leftMargin}px; padding-right: ${rightMargin}px;`,
-        class:
-          'focus:outline-none print:border-0 bg-white border border-[#c7c7c7] flex flex-col min-h-[1054px] w-[816px] pt-10 pr-14 pb-10 cursor-text'
+        class: `focus:outline-none print:border-0 bg-white border border-[#c7c7c7] flex flex-col min-h-[1054px] w-[${PAGE_WIDTH}px] pt-10 pr-14 pb-10 cursor-text`
       }
     },
     extensions: [
@@ -123,7 +130,13 @@ const Editor = ({ initialContent }: EditorProps) => {
   return (
     <div className='size-full overflow-x-auto bg-[#F9FbFD] px-4 print:p-0 print:bg-white print:overflow-visible'>
       <Ruler />
-      <div className='min-w-max flex justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0'>
+      <div
+        className={`min-w-max flex justify-center w-[${PAGE_WIDTH}px] py-4 print:py-0 mx-auto print:w-full print:min-w-0`}
+        style={{
+          paddingLeft: `${leftMargin}px`,
+          paddingRight: `${rightMargin}px`
+        }}
+      >
         <EditorContent editor={editor} />
         <Threads editor={editor} />
       </div>

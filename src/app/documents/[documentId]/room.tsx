@@ -13,10 +13,15 @@ import { getDocuments, getUsers } from './actions'
 import { toast } from 'sonner'
 import { Id } from '../../../../convex/_generated/dataModel'
 
+// constants
+import { LEFT_MARGIN_DEFAULT, RIGHT_MARGIN_DEFAULT } from '@/constants/consts'
+
+// types
 type User = {
   id: string
   name: string
   avatar: string
+  color: string
 }
 
 export function Room({ children }: { children: ReactNode }) {
@@ -28,7 +33,7 @@ export function Room({ children }: { children: ReactNode }) {
     () => async () => {
       try {
         const users = await getUsers()
-        setUsers(users)
+        setUsers(users as User[])
       } catch {
         toast.error('Error fetching users')
       }
@@ -56,9 +61,15 @@ export function Room({ children }: { children: ReactNode }) {
         return data
       }}
       resolveUsers={({ userIds }) =>
-        userIds.map(
-          (userId) => users.find((user) => user.id === userId) ?? undefined
-        )
+        userIds.map((userId) => {
+          const user = users.find((user) => user.id === userId)
+          if (!user) return undefined
+          return {
+            name: user.name,
+            avatar: user.avatar,
+            color: 'green'
+          }
+        })
       }
       resolveMentionSuggestions={({ text }) => {
         let filteredUsers = users
@@ -82,8 +93,8 @@ export function Room({ children }: { children: ReactNode }) {
       <RoomProvider
         id={documentId as string}
         initialStorage={{
-          leftMargin: 56,
-          rightMargin: 56
+          leftMargin: LEFT_MARGIN_DEFAULT,
+          rightMargin: RIGHT_MARGIN_DEFAULT
         }}
       >
         <ClientSideSuspense
