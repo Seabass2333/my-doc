@@ -19,7 +19,7 @@ import { api } from '../../../convex/_generated/api'
 
 interface Template {
   title: string
-  content: string
+  initialContent: string
 }
 
 const TemplateGallery = () => {
@@ -27,11 +27,11 @@ const TemplateGallery = () => {
   const create = useMutation(api.documents.create)
   const [isCreating, setIsCreating] = useState(false)
 
-  const onTemplateClick = (template: Template) => {
+  const onTemplateClick = ({ title, initialContent }: Template) => {
     setIsCreating(true)
     create({
-      title: template.title,
-      initialContent: template.content
+      title,
+      initialContent
     })
       .then((documentId) => {
         toast.success('Document created')
@@ -64,11 +64,10 @@ const TemplateGallery = () => {
                 >
                   <button
                     disabled={isCreating}
-                    // TODO: add proper content
                     onClick={() =>
                       onTemplateClick({
                         title: template.title,
-                        content: ''
+                        initialContent: template.initialContent
                       })
                     }
                     style={{
