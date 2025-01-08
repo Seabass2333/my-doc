@@ -1,5 +1,5 @@
 import { Extension } from "@tiptap/react";
-import "@tiptap/extension-text-style"
+import "@tiptap/extension-text-style";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -25,7 +25,7 @@ export const FontSizeExtension = Extension.create({
           fontSize: {
             default: null,
             parseHTML: (element: HTMLElement) => element.style.fontSize,
-            renderHTML: (attrs: { fontSize: string }) => {
+            renderHTML: (attrs) => {
               if (!attrs.fontSize) {
                 return {}
               }
