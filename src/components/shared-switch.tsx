@@ -151,12 +151,14 @@ const SharedSwitch = ({
                   </form>
                 </Form>
               ) : (
-                <p className='text-sm text-[#333]'>No organization found</p>
+                <span className='text-sm text-[#333]'>
+                  No organization found
+                </span>
               )
             ) : (
-              <p className='text-sm text-[#333]'>
+              <span className='text-sm text-[#333]'>
                 This action will switch the document to personal
-              </p>
+              </span>
             )}
           </AlertDialogDescription>
         </AlertDialogHeader>
