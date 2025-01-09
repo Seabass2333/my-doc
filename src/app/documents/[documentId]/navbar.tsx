@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { DocumentInput } from './document-input'
@@ -35,7 +36,8 @@ import {
   AlignCenterIcon,
   AlignLeftIcon,
   AlignRightIcon,
-  RemoveFormattingIcon
+  RemoveFormattingIcon,
+  SwitchCameraIcon
 } from 'lucide-react'
 import { useMutation } from 'convex/react'
 import { BsFilePdf } from 'react-icons/bs'
@@ -50,6 +52,9 @@ import { api } from '../../../../convex/_generated/api'
 import { Doc } from '../../../../convex/_generated/dataModel'
 import { RemoveDialog } from '@/components/remove-dialog'
 import { RenameDialog } from '@/components/rename-dialog'
+import SharedSwitch from '@/components/shared-switch'
+import { getOrganizationList } from '@/app/servers'
+import { cn } from '@/lib/utils'
 
 interface NavbarProps {
   data: Doc<'documents'>
@@ -58,6 +63,19 @@ interface NavbarProps {
 export const Navbar = ({ data }: NavbarProps) => {
   const router = useRouter()
   const { editor } = useEditorStore()
+  const [organizationList, setOrganizationList] = useState<
+    { id: string; name: string; image: string }[]
+  >([])
+
+  // 获取组织列表
+  useEffect(() => {
+    const getOrgs = async () => {
+      const organizationList = await getOrganizationList()
+      console.log(organizationList)
+      setOrganizationList(organizationList)
+    }
+    getOrgs()
+  }, [])
 
   const mutation = useMutation(api.documents.create)
 
@@ -205,6 +223,58 @@ export const Navbar = ({ data }: NavbarProps) => {
                       Remove
                     </MenubarItem>
                   </RemoveDialog>
+
+                  {/* switch */}
+                  <SharedSwitch documentId={data._id}>
+                    <MenubarItem
+                      disabled={!data.organizationId}
+                      onSelect={(e) => {
+                        e.preventDefault()
+                      }}
+                    >
+                      <SwitchCameraIcon className='size-4 mr-2' />
+                      Switch to Personal
+                    </MenubarItem>
+                  </SharedSwitch>
+                  <MenubarSub>
+                    <MenubarSubTrigger
+                      disabled={!!data.organizationId}
+                      className={cn(
+                        !!data.organizationId && 'opacity-50 cursor-not-allowed'
+                      )}
+                    >
+                      <SwitchCameraIcon className='size-4 mr-2' />
+                      Switch to Organization
+                    </MenubarSubTrigger>
+                    <MenubarSubContent>
+                      {organizationList.map((org) => (
+                        <SharedSwitch
+                          key={org.id}
+                          documentId={data._id}
+                          isPersonal={true}
+                          organizationId={org.id}
+                        >
+                          <MenubarItem
+                            onSelect={(e) => {
+                              e.preventDefault()
+                            }}
+                            className='cursor-pointer hover:bg-muted max-w-[240px] truncate'
+                          >
+                            <Image
+                              src={org.image || '/logo.svg'}
+                              alt={org.name}
+                              width={20}
+                              height={20}
+                              className='rounded-full mr-2'
+                            />
+                            <span className='max-w-[200px] truncate'>
+                              {org.name}
+                            </span>
+                          </MenubarItem>
+                        </SharedSwitch>
+                      ))}
+                    </MenubarSubContent>
+                  </MenubarSub>
                   <MenubarSeparator />
                   <MenubarItem
                     className='flex justify-between'

@@ -58,15 +58,18 @@ const DocumentMenu = ({ documentId, title, onNewTab }: DocumentMenuProps) => {
           </DropdownMenuItem>
         </RemoveDialog>
         <DropdownMenuItem onClick={() => onNewTab(documentId)}>
-          <ExternalLinkIcon className='size-4' />
+          <ExternalLinkIcon className='size-4 mr-2' />
           <span>Open in new tab</span>
         </DropdownMenuItem>
-        <SharedSwitch documentId={documentId}>
+        {/* <SharedSwitch
+          documentId={documentId}
+          isPersonal={isPersonal}
+        >
           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-            <SwitchCameraIcon className='size-4' />
+            <SwitchCameraIcon className='size-4 mr-2' />
             <span>Switch to {isPersonal ? 'organization' : 'personal'}</span>
           </DropdownMenuItem>
-        </SharedSwitch>
+        </SharedSwitch> */}
       </DropdownMenuContent>
     </DropdownMenu>
   )

@@ -1,5 +1,6 @@
 import { ConvexError, v } from 'convex/values'
 import { paginationOptsValidator } from 'convex/server'
+import { auth } from '@clerk/nextjs/server'
 
 import { mutation, query } from './_generated/server'
 
@@ -147,7 +148,6 @@ export const updateById = mutation({
     }
 
     const organizationId = (user.organization_id ?? undefined) as string | undefined
-    const organizationRole = (user.organization_role ?? undefined) as string | undefined
 
     const document = await ctx.db.get(args.id)
     if (!document) {
@@ -157,12 +157,60 @@ export const updateById = mutation({
     const isOwner = document.ownerId === user.subject
     const isOrganizationMember = !!(document.organizationId && document.organizationId === organizationId)
 
-    if (!isOwner && !isOrganizationMember && organizationRole !== 'admin') {
+    if (!isOwner && !isOrganizationMember) {
       throw new ConvexError('Unauthorized')
     }
 
     return await ctx.db.patch(args.id, {
       title: args.title,
+    })
+  }
+})
+
+// 切换文档属性 personal <-> organization
+export const switchDocumentToOrganization = mutation({
+  args: { id: v.id('documents'), organizationId: v.string() },
+  handler: async (ctx, args) => {
+    const user = await ctx.auth.getUserIdentity()
+    if (!user) {
+      throw new ConvexError('Unauthorized')
+    }
+
+    const document = await ctx.db.get(args.id)
+    if (!document) {
+      throw new ConvexError('Document not found')
+    }
+
+    if (document.ownerId !== user.subject) {
+      throw new ConvexError('Unauthorized')
+    }
+
+    return await ctx.db.patch(args.id, {
+      organizationId: args.organizationId,
+    })
+  }
+})
+
+// 切换文档属性 organization -> personal
+export const switchDocumentToPersonal = mutation({
+  args: { id: v.id('documents') },
+  handler: async (ctx, args) => {
+    const user = await ctx.auth.getUserIdentity()
+    if (!user) {
+      throw new ConvexError('Unauthorized')
+    }
+
+    const document = await ctx.db.get(args.id)
+    if (!document) {
+      throw new ConvexError('Document not found')
+    }
+
+    if (document.ownerId !== user.subject) {
+      throw new ConvexError('Unauthorized')
+    }
+
+    return await ctx.db.patch(args.id, {
+      organizationId: undefined,
     })
   }
 })
