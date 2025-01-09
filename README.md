@@ -9,7 +9,7 @@ Open [https://my-doc-alpha.vercel.app](https://my-doc-alpha.vercel.app) with you
 First, run the development server:
 
 ```bash
-npm run dev
+npm run dev (suggestion)
 # or
 yarn dev
 # or
@@ -17,3 +17,5 @@ pnpm dev
 # or
 bun dev
 ```
+
+> !!This project is based on React@19.0.0 and nextjs@15.0.4, some plugins are not yet supported, so I used npm development!
