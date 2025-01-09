@@ -61,7 +61,7 @@ const DocumentMenu = ({ documentId, title, onNewTab }: DocumentMenuProps) => {
           <ExternalLinkIcon className='size-4 mr-2' />
           <span>Open in new tab</span>
         </DropdownMenuItem>
-        {/* <SharedSwitch
+        <SharedSwitch
           documentId={documentId}
           isPersonal={isPersonal}
         >
@@ -69,7 +69,7 @@ const DocumentMenu = ({ documentId, title, onNewTab }: DocumentMenuProps) => {
             <SwitchCameraIcon className='size-4 mr-2' />
             <span>Switch to {isPersonal ? 'organization' : 'personal'}</span>
           </DropdownMenuItem>
-        </SharedSwitch> */}
+        </SharedSwitch>
       </DropdownMenuContent>
     </DropdownMenu>
   )

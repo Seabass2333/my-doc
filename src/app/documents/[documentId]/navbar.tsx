@@ -71,7 +71,6 @@ export const Navbar = ({ data }: NavbarProps) => {
   useEffect(() => {
     const getOrgs = async () => {
       const organizationList = await getOrganizationList()
-      console.log(organizationList)
       setOrganizationList(organizationList)
     }
     getOrgs()
