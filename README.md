@@ -19,3 +19,6 @@ bun dev
 ```
 
 > !!This project is based on React@19.0.0 and nextjs@15.0.4, some plugins are not yet supported, so I used npm development!
+> If you need to add any packages, you should use `npm install name --legacy-peer-deps` to avoid unknown error
+
+Main packages: Nextjs / shadcn / convex / liveblocks / tiptap / clerk
