@@ -25,14 +25,14 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group'
 
 interface SharedSwitchProps {
   documentId: Id<'documents'>
-  organizationId?: string
+  // organizationId?: string
   isPersonal?: boolean
   children: React.ReactNode
 }
 // 切换文档属性 personal <-> organization
 const SharedSwitch = ({
   documentId,
-  organizationId,
+  // organizationId,
   isPersonal = false,
   children
 }: SharedSwitchProps) => {

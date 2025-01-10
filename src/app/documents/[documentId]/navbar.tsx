@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { DocumentInput } from './document-input'
@@ -53,8 +53,8 @@ import { Doc } from '../../../../convex/_generated/dataModel'
 import { RemoveDialog } from '@/components/remove-dialog'
 import { RenameDialog } from '@/components/rename-dialog'
 import SharedSwitch from '@/components/shared-switch'
-import { getOrganizationList } from '@/app/servers'
-import { cn } from '@/lib/utils'
+// import { getOrganizationList } from '@/app/servers'
+// import { cn } from '@/lib/utils'
 
 interface NavbarProps {
   data: Doc<'documents'>
@@ -63,18 +63,18 @@ interface NavbarProps {
 export const Navbar = ({ data }: NavbarProps) => {
   const router = useRouter()
   const { editor } = useEditorStore()
-  const [organizationList, setOrganizationList] = useState<
-    { id: string; name: string; image: string }[]
-  >([])
+  // const [organizationList, setOrganizationList] = useState<
+  //   { id: string; name: string; image: string }[]
+  // >([])
 
   // 获取组织列表
-  useEffect(() => {
-    const getOrgs = async () => {
-      const organizationList = await getOrganizationList()
-      setOrganizationList(organizationList)
-    }
-    getOrgs()
-  }, [])
+  // useEffect(() => {
+  //   const getOrgs = async () => {
+  //     const organizationList = await getOrganizationList()
+  //     setOrganizationList(organizationList)
+  //   }
+  //   getOrgs()
+  // }, [])
 
   const mutation = useMutation(api.documents.create)
 
@@ -235,7 +235,21 @@ export const Navbar = ({ data }: NavbarProps) => {
                       Switch to Personal
                     </MenubarItem>
                   </SharedSwitch>
-                  <MenubarSub>
+                  <SharedSwitch
+                    documentId={data._id}
+                    isPersonal={true}
+                  >
+                    <MenubarItem
+                      disabled={!!data.organizationId}
+                      onSelect={(e) => {
+                        e.preventDefault()
+                      }}
+                    >
+                      <SwitchCameraIcon className='size-4 mr-2' />
+                      Switch to Organization
+                    </MenubarItem>
+                  </SharedSwitch>
+                  {/* <MenubarSub>
                     <MenubarSubTrigger
                       disabled={!!data.organizationId}
                       className={cn(
@@ -273,7 +287,7 @@ export const Navbar = ({ data }: NavbarProps) => {
                         </SharedSwitch>
                       ))}
                     </MenubarSubContent>
-                  </MenubarSub>
+                  </MenubarSub> */}
                   <MenubarSeparator />
                   <MenubarItem
                     className='flex justify-between'
