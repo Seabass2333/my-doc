@@ -1,6 +1,5 @@
 import { ConvexError, v } from 'convex/values'
 import { paginationOptsValidator } from 'convex/server'
-import { auth } from '@clerk/nextjs/server'
 
 import { mutation, query } from './_generated/server'
 
